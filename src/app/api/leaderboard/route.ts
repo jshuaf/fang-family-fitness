@@ -26,7 +26,7 @@ export async function GET() {
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
     const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
     
-    // Get leaderboard data for ALL family members with any activities
+    // Get leaderboard data for current month only
     const leaderboardResult = await client.query(`
       SELECT 
         athlete_name,
@@ -36,9 +36,10 @@ export async function GET() {
         ROUND(MAX(distance)::numeric, 2) as longest_run,
         ROUND(MIN(distance)::numeric, 2) as shortest_run
       FROM activities 
+      WHERE last_fetched_at >= $1 AND last_fetched_at < $2
       GROUP BY athlete_name
       ORDER BY total_miles DESC, total_runs DESC
-    `, [])
+    `, [monthStart, nextMonth])
     
     // Get individual activities for chart data
     const activitiesResult = await client.query(`

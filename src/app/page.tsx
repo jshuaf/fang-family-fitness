@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { RefreshCw } from 'lucide-react'
+import SimpleBarChart from '@/components/SimpleBarChart'
 
 interface LeaderboardData {
   athlete_name: string
@@ -73,7 +74,7 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-stone-600 text-sm ml-5">
-            A running log
+            {data?.month || 'Monthly'} running log
           </p>
         </div>
 
@@ -81,14 +82,17 @@ export default function Home() {
           <>
             {/* Hero Metric - Large Central Display */}
             <div className="mb-24 text-center">
-              <div className="section-title">Total Distance</div>
+              <div className="section-title">Total Distance This Month</div>
               <div className="metric-display text-9xl leading-none mb-4">
                 {data.totalMiles.toFixed(1)}
               </div>
               <div className="text-stone-500 text-sm tracking-wide">
-                MILES RUN BY {totalMembers} FAMILY MEMBERS
+                MILES RUN IN {data.month.toUpperCase()} BY {totalMembers} FAMILY MEMBERS
               </div>
             </div>
+
+            {/* Bar Chart - Clean and Minimal */}
+            <SimpleBarChart data={data.leaderboard} />
 
             {/* Leaderboard - Minimal List */}
             <div className="mb-20">
@@ -134,7 +138,7 @@ export default function Home() {
                   {totalRuns}
                 </div>
                 <div className="text-stone-500 text-xs tracking-wide">
-                  TOTAL RUNS
+                  RUNS THIS MONTH
                 </div>
               </div>
               <div className="text-center">
@@ -147,7 +151,7 @@ export default function Home() {
               </div>
               <div className="text-center">
                 <div className="metric-display text-3xl mb-2">
-                  {Math.max(...data.leaderboard.map(m => parseFloat(m.longest_run.toString()))).toFixed(1)}
+                  {data.leaderboard.length > 0 ? Math.max(...data.leaderboard.map(m => parseFloat(m.longest_run.toString()))).toFixed(1) : '0.0'}
                 </div>
                 <div className="text-stone-500 text-xs tracking-wide">
                   LONGEST RUN
