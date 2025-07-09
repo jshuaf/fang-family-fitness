@@ -13,7 +13,7 @@ export async function GET() {
       }, { status: 500 })
     }
 
-    console.log('Attempting to connect to database...')
+    console.log('Attempting to connect to database without pooling...')
     client = new Client({
       connectionString: process.env.DATABASE_URL,
       ssl: {
@@ -21,7 +21,7 @@ export async function GET() {
       }
     })
     await client.connect()
-    console.log('Database connection established')
+    console.log('Direct database connection established successfully')
     
     // Get current month start and end dates
     const now = new Date()
