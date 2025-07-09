@@ -2,7 +2,12 @@
 
 A beautiful, modern dashboard to track your family's fitness journey together.
 
-🚀 **Live Demo**: [fang-family-fitness.vercel.app](https://fang-family-fitness.vercel.app)
+## 🚀 Deploy Now
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjshuaf%2Ffang-family-fitness&env=DATABASE_URL&envDescription=Supabase%20PostgreSQL%20connection%20string&project-name=fang-family-fitness&repository-name=fang-family-fitness)
+
+**Environment Variable Required:**
+- `DATABASE_URL`: `postgresql://postgres:strava@db.urkrmvdjxnmvtoyoogrm.supabase.co:5432/postgres`
 
 ## Features
 
