@@ -45,10 +45,10 @@ export default function LeaderboardTable({ data }: LeaderboardTableProps) {
   return (
     <div className="card">
       <div className="card-header">
-        <h3 className="text-lg font-semibold text-gray-900">Leaderboard</h3>
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <Activity className="w-4 h-4" />
-          <span>{data.length} active members</span>
+        <h3 className="text-2xl font-bold text-white">Leaderboard</h3>
+        <div className="flex items-center gap-2 text-sm text-gray-400">
+          <Activity className="w-5 h-5" />
+          <span>{data.length} members</span>
         </div>
       </div>
       
@@ -68,27 +68,27 @@ export default function LeaderboardTable({ data }: LeaderboardTableProps) {
               </div>
               
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-900">{member.athlete_name}</h4>
-                <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
+                <h4 className="font-bold text-xl text-white">{member.athlete_name}</h4>
+                <div className="flex items-center gap-4 text-sm text-gray-400 mt-2">
                   <div className="flex items-center gap-1">
-                    <TrendingUp className="w-3 h-3" />
+                    <TrendingUp className="w-4 h-4" />
                     <span>{member.total_runs} runs</span>
                   </div>
                   <div>
-                    Avg: {member.avg_distance}mi
+                    Avg: {parseFloat(member.avg_distance.toString()).toFixed(2)}mi
                   </div>
                   <div>
-                    Best: {member.longest_run}mi
+                    Best: {parseFloat(member.longest_run.toString()).toFixed(2)}mi
                   </div>
                 </div>
               </div>
             </div>
             
             <div className="text-right">
-              <div className="text-2xl font-bold text-gray-900">
-                {member.total_miles}
+              <div className="text-3xl font-bold text-white">
+                {parseFloat(member.total_miles.toString()).toFixed(2)}
               </div>
-              <div className="text-sm text-gray-500">miles</div>
+              <div className="text-sm text-gray-400">miles</div>
             </div>
           </div>
         ))}

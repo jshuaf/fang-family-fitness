@@ -26,27 +26,26 @@ export async function GET() {
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
     const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
     
-    // Get leaderboard data
+    // Get leaderboard data for ALL family members with any activities
     const leaderboardResult = await client.query(`
       SELECT 
         athlete_name,
         COUNT(*) as total_runs,
         ROUND(SUM(distance)::numeric, 2) as total_miles,
         ROUND(AVG(distance)::numeric, 2) as avg_distance,
-        MAX(distance) as longest_run,
-        MIN(distance) as shortest_run
+        ROUND(MAX(distance)::numeric, 2) as longest_run,
+        ROUND(MIN(distance)::numeric, 2) as shortest_run
       FROM activities 
-      WHERE last_fetched_at >= $1 AND last_fetched_at < $2
       GROUP BY athlete_name
       ORDER BY total_miles DESC, total_runs DESC
-    `, [monthStart, nextMonth])
+    `, [])
     
     // Get individual activities for chart data
     const activitiesResult = await client.query(`
       SELECT 
         athlete_name,
         activity_name,
-        distance,
+        ROUND(distance::numeric, 2) as distance,
         duration,
         last_fetched_at
       FROM activities 

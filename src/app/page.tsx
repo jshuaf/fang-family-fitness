@@ -52,7 +52,7 @@ export default function Home() {
     fetchData()
   }, [])
 
-  const totalRuns = data?.leaderboard.reduce((sum, member) => sum + member.total_runs, 0) || 0
+  const totalRuns = data?.leaderboard.reduce((sum, member) => sum + parseInt(member.total_runs.toString()), 0) || 0
   const totalMembers = data?.leaderboard.length || 0
 
   if (loading) {
@@ -64,33 +64,35 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/10 to-orange-900/20"></div>
+      <div className="relative z-10 container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-8 animate-fade-in">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-3 bg-primary-500 rounded-full">
-              <Heart className="w-8 h-8 text-white" />
+        <div className="text-center mb-12 animate-fade-in">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="p-4 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl glow">
+              <Heart className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-gradient">
+            <h1 className="text-6xl font-bold text-gradient">
               Fang Family Fitness
             </h1>
           </div>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-400 text-xl">
             Tracking our family's fitness journey together
           </p>
           
-          <div className="flex items-center justify-center gap-4 mt-4">
+          <div className="flex items-center justify-center gap-6 mt-8">
             <button
               onClick={fetchData}
-              className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 font-semibold glow"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className="w-5 h-5" />
               Refresh Data
             </button>
             
             {lastUpdated && (
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-400">
                 Last updated: {lastUpdated.toLocaleTimeString()}
               </div>
             )}
@@ -120,38 +122,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Recent Activities */}
-            <div className="mt-8 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-              <div className="card">
-                <div className="card-header">
-                  <h3 className="text-lg font-semibold text-gray-900">Recent Activities</h3>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <Activity className="w-4 h-4" />
-                    <span>Latest runs</span>
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  {data.activities.slice(0, 8).map((activity, index) => (
-                    <div 
-                      key={`${activity.athlete_name}-${index}`}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                    >
-                      <div>
-                        <div className="font-medium text-gray-900">{activity.athlete_name}</div>
-                        <div className="text-sm text-gray-600">{activity.activity_name}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-semibold text-gray-900">{activity.distance.toFixed(2)} mi</div>
-                        <div className="text-sm text-gray-500">
-                          {Math.floor(activity.duration / 60)}m {activity.duration % 60}s
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
           </>
         )}
       </div>

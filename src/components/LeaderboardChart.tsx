@@ -15,7 +15,7 @@ interface LeaderboardChartProps {
   data: LeaderboardData[]
 }
 
-const COLORS = ['#0ea5e9', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444']
+const COLORS = ['#a855f7', '#ec4899', '#f97316', '#06b6d4', '#10b981', '#f59e0b']
 
 export default function LeaderboardChart({ data }: LeaderboardChartProps) {
   const chartData = data.map((item, index) => ({
@@ -29,7 +29,7 @@ export default function LeaderboardChart({ data }: LeaderboardChartProps) {
   return (
     <div className="card">
       <div className="card-header">
-        <h3 className="text-lg font-semibold text-gray-900">Monthly Progress</h3>
+        <h3 className="text-2xl font-bold text-white">Miles Comparison</h3>
       </div>
       
       <div className="h-80">
@@ -43,30 +43,30 @@ export default function LeaderboardChart({ data }: LeaderboardChartProps) {
               bottom: 5,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
             <XAxis 
               dataKey="name" 
               axisLine={false}
               tickLine={false}
-              tick={{ fill: '#64748b', fontSize: 12 }}
+              tick={{ fill: '#9ca3af', fontSize: 14, fontWeight: 'bold' }}
             />
             <YAxis 
               axisLine={false}
               tickLine={false}
-              tick={{ fill: '#64748b', fontSize: 12 }}
-              label={{ value: 'Miles', angle: -90, position: 'insideLeft' }}
+              tick={{ fill: '#9ca3af', fontSize: 12 }}
+              label={{ value: 'Miles', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9ca3af' } }}
             />
             <Tooltip 
               content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
                   const data = payload[0].payload
                   return (
-                    <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-                      <p className="font-semibold text-gray-900">{data.fullName}</p>
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium">{data.miles} miles</span> • {data.runs} runs
+                    <div className="bg-gray-900 p-3 border border-gray-700 rounded-lg shadow-xl">
+                      <p className="font-semibold text-white">{data.fullName}</p>
+                      <p className="text-sm text-gray-300">
+                        <span className="font-medium">{data.miles.toFixed(2)} miles</span> • {data.runs} runs
                       </p>
-                      <p className="text-xs text-gray-500">Rank #{data.rank}</p>
+                      <p className="text-xs text-gray-400">Rank #{data.rank}</p>
                     </div>
                   )
                 }
