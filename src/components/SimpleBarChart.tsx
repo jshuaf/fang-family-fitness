@@ -55,7 +55,7 @@ export default function SimpleBarChart({ data }: SimpleBarChartProps) {
               </div>
               
               <div className="text-stone-400 text-xs mt-1">
-                {member.total_runs} runs
+                {member.total_runs} activities
               </div>
             </div>
           )

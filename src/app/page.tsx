@@ -36,11 +36,18 @@ export default function Home() {
   const fetchData = async () => {
     try {
       const response = await fetch('/api/leaderboard')
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
       const result = await response.json()
+      if (result.error) {
+        throw new Error(result.error)
+      }
       setData(result)
       setLastUpdated(new Date())
     } catch (error) {
       console.error('Error fetching data:', error)
+      setData(null)
     } finally {
       setLoading(false)
     }
@@ -50,13 +57,29 @@ export default function Home() {
     fetchData()
   }, [])
 
-  const totalRuns = data?.leaderboard.reduce((sum, member) => sum + parseInt(member.total_runs.toString()), 0) || 0
-  const totalMembers = data?.leaderboard.length || 0
+  const totalRuns = data?.leaderboard?.reduce((sum, member) => sum + parseInt(member.total_runs.toString()), 0) || 0
+  const totalMembers = data?.leaderboard?.length || 0
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+      </div>
+    )
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-stone-600 mb-4">Failed to load data</div>
+          <button
+            onClick={fetchData}
+            className="mono text-xs text-stone-600 hover:text-stone-900 transition-colors border-b border-stone-300 hover:border-stone-900 pb-1"
+          >
+            RETRY
+          </button>
+        </div>
       </div>
     )
   }
@@ -74,7 +97,7 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-stone-600 text-sm ml-5">
-            {data?.month || 'Monthly'} running log
+            {data?.month || 'Monthly'} activity log
           </p>
         </div>
 
@@ -87,7 +110,7 @@ export default function Home() {
                 {data.totalMiles.toFixed(1)}
               </div>
               <div className="text-stone-500 text-sm tracking-wide">
-                MILES RUN IN {data.month.toUpperCase()} BY {totalMembers} FAMILY MEMBERS
+                MILES COVERED IN {data.month.toUpperCase()} BY {totalMembers} FAMILY MEMBERS
               </div>
             </div>
 
@@ -138,7 +161,7 @@ export default function Home() {
                   {totalRuns}
                 </div>
                 <div className="text-stone-500 text-xs tracking-wide">
-                  RUNS THIS MONTH
+                  ACTIVITIES THIS MONTH
                 </div>
               </div>
               <div className="text-center">

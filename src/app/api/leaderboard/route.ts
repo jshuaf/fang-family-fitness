@@ -26,6 +26,8 @@ export async function GET() {
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
     const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
     
+    console.log('Current month filter:', monthStart, 'to', nextMonth)
+    
     // Get leaderboard data for current month only
     const leaderboardResult = await client.query(`
       SELECT 
@@ -41,11 +43,12 @@ export async function GET() {
       ORDER BY total_miles DESC, total_runs DESC
     `, [monthStart, nextMonth])
     
-    // Get individual activities for chart data
+    // Get individual activities for chart data - current month
     const activitiesResult = await client.query(`
       SELECT 
         athlete_name,
         activity_name,
+        activity_type,
         ROUND(distance::numeric, 2) as distance,
         duration,
         last_fetched_at
