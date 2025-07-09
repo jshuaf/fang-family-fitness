@@ -13,7 +13,7 @@ export async function GET() {
       }, { status: 500 })
     }
 
-    console.log('Attempting to connect to database without pooling...')
+    console.log('Attempting to connect to database with Session Mode...')
     client = new Client({
       connectionString: process.env.DATABASE_URL,
       ssl: {
