@@ -4,10 +4,23 @@ A beautiful, modern dashboard to track your family's fitness journey together.
 
 ## 🚀 Deploy Now
 
+### Option 1: One-Click Deploy
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjshuaf%2Ffang-family-fitness&env=DATABASE_URL&envDescription=Supabase%20PostgreSQL%20connection%20string&project-name=fang-family-fitness&repository-name=fang-family-fitness)
 
-**Environment Variable Required:**
-- `DATABASE_URL`: `postgresql://postgres:strava@db.urkrmvdjxnmvtoyoogrm.supabase.co:5432/postgres`
+### Option 2: Manual Deploy
+1. Go to [vercel.com/new](https://vercel.com/new)
+2. Import repository: `jshuaf/fang-family-fitness`
+3. Add Environment Variable:
+   - **Name**: `DATABASE_URL` 
+   - **Value**: `postgresql://postgres:strava@db.urkrmvdjxnmvtoyoogrm.supabase.co:5432/postgres`
+4. Deploy
+
+### ⚠️ Important: Environment Variable Setup
+After deployment, if you see an error:
+1. Go to your Vercel project settings
+2. Navigate to **Environment Variables**
+3. Add: `DATABASE_URL` = `postgresql://postgres:strava@db.urkrmvdjxnmvtoyoogrm.supabase.co:5432/postgres`
+4. **Redeploy** the project
 
 ## Features
 

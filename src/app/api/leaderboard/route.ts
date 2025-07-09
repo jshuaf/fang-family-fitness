@@ -10,6 +10,15 @@ const pool = new Pool({
 
 export async function GET() {
   try {
+    // Debug environment variable
+    if (!process.env.DATABASE_URL) {
+      console.error('DATABASE_URL not found in environment variables')
+      return NextResponse.json({ 
+        error: 'Database configuration missing', 
+        details: 'DATABASE_URL environment variable not set' 
+      }, { status: 500 })
+    }
+
     const client = await pool.connect()
     
     // Get current month start and end dates
