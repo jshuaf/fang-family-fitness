@@ -1,10 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { RefreshCw, Heart, Activity } from 'lucide-react'
-import LeaderboardChart from '@/components/LeaderboardChart'
-import LeaderboardTable from '@/components/LeaderboardTable'
-import StatsCard from '@/components/StatsCard'
+import { RefreshCw } from 'lucide-react'
 
 interface LeaderboardData {
   athlete_name: string
@@ -64,62 +61,113 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/10 to-orange-900/20"></div>
-      <div className="relative z-10 container mx-auto px-4 py-8 max-w-6xl">
-        {/* Header */}
-        <div className="text-center mb-12 animate-fade-in">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="p-4 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl glow">
-              <Heart className="w-10 h-10 text-white" />
-            </div>
-            <h1 className="text-6xl font-bold text-gradient">
+    <div className="min-h-screen bg-stone-50">
+      <div className="max-w-5xl mx-auto px-8 py-16">
+        
+        {/* Header - Editorial Style */}
+        <div className="mb-20">
+          <div className="flex items-baseline gap-3 mb-2">
+            <div className="w-2 h-2 bg-stone-900 rounded-full mt-4"></div>
+            <h1 className="text-4xl font-light tracking-tight text-stone-900">
               Fang Family Fitness
             </h1>
           </div>
-          <p className="text-gray-400 text-xl">
-            Tracking our family's fitness journey together
+          <p className="text-stone-600 text-sm ml-5">
+            A running log
           </p>
-          
-          <div className="flex items-center justify-center gap-6 mt-8">
-            <button
-              onClick={fetchData}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 font-semibold glow"
-            >
-              <RefreshCw className="w-5 h-5" />
-              Refresh Data
-            </button>
-            
-            {lastUpdated && (
-              <div className="text-sm text-gray-400">
-                Last updated: {lastUpdated.toLocaleTimeString()}
-              </div>
-            )}
-          </div>
         </div>
 
         {data && (
           <>
-            {/* Stats Cards */}
-            <StatsCard 
-              totalMiles={data.totalMiles}
-              month={data.month}
-              totalRuns={totalRuns}
-              totalMembers={totalMembers}
-            />
-
-            {/* Main Content */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Chart */}
-              <div className="animate-slide-up">
-                <LeaderboardChart data={data.leaderboard} />
+            {/* Hero Metric - Large Central Display */}
+            <div className="mb-24 text-center">
+              <div className="section-title">Total Distance</div>
+              <div className="metric-display text-9xl leading-none mb-4">
+                {data.totalMiles.toFixed(1)}
               </div>
-
-              {/* Leaderboard Table */}
-              <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                <LeaderboardTable data={data.leaderboard} />
+              <div className="text-stone-500 text-sm tracking-wide">
+                MILES RUN BY {totalMembers} FAMILY MEMBERS
               </div>
+            </div>
+
+            {/* Leaderboard - Minimal List */}
+            <div className="mb-20">
+              <div className="section-title">Leaderboard</div>
+              <div className="space-y-0">
+                {data.leaderboard.map((member, index) => (
+                  <div 
+                    key={member.athlete_name}
+                    className="py-6 border-b border-stone-200 last:border-b-0 hover-lift"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-8">
+                        <div className="mono text-stone-400 text-sm w-8">
+                          {String(index + 1).padStart(2, '0')}
+                        </div>
+                        <div>
+                          <div className="name-display text-lg">
+                            {member.athlete_name}
+                          </div>
+                          <div className="text-stone-500 text-xs mt-1">
+                            {member.total_runs} runs • avg {parseFloat(member.avg_distance.toString()).toFixed(1)} mi
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="metric-display text-2xl">
+                          {parseFloat(member.total_miles.toString()).toFixed(1)}
+                        </div>
+                        <div className="text-stone-400 text-xs mt-1">
+                          MILES
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Stats Grid - Minimal */}
+            <div className="grid grid-cols-3 gap-12 mb-16">
+              <div className="text-center">
+                <div className="metric-display text-3xl mb-2">
+                  {totalRuns}
+                </div>
+                <div className="text-stone-500 text-xs tracking-wide">
+                  TOTAL RUNS
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="metric-display text-3xl mb-2">
+                  {(data.totalMiles / totalMembers).toFixed(1)}
+                </div>
+                <div className="text-stone-500 text-xs tracking-wide">
+                  AVG PER PERSON
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="metric-display text-3xl mb-2">
+                  {Math.max(...data.leaderboard.map(m => parseFloat(m.longest_run.toString()))).toFixed(1)}
+                </div>
+                <div className="text-stone-500 text-xs tracking-wide">
+                  LONGEST RUN
+                </div>
+              </div>
+            </div>
+
+            {/* Refresh Button - Minimal */}
+            <div className="text-center">
+              <button
+                onClick={fetchData}
+                className="mono text-xs text-stone-600 hover:text-stone-900 transition-colors border-b border-stone-300 hover:border-stone-900 pb-1"
+              >
+                REFRESH DATA
+              </button>
+              {lastUpdated && (
+                <div className="text-stone-400 text-xs mt-2">
+                  Last updated {lastUpdated.toLocaleTimeString()}
+                </div>
+              )}
             </div>
 
           </>

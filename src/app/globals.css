@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,54 +10,33 @@
   }
   
   body {
-    @apply bg-black text-white;
+    @apply bg-stone-50 text-stone-900;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
 @layer components {
-  .card {
-    @apply bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-800 p-6 hover:border-gray-700 transition-all duration-300;
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
   }
   
-  .card-header {
-    @apply flex items-center justify-between mb-6;
+  .metric-display {
+    @apply mono text-stone-900 font-semibold tracking-tight;
   }
   
-  .stat-card {
-    @apply bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 text-white rounded-2xl p-6 shadow-2xl;
+  .section-title {
+    @apply text-stone-700 text-xs uppercase tracking-wider font-medium mb-8;
   }
   
-  .leaderboard-item {
-    @apply flex items-center justify-between p-4 rounded-xl bg-gray-900/30 border border-gray-800 hover:border-purple-500/50 hover:bg-gray-800/50 transition-all duration-300;
+  .name-display {
+    @apply text-stone-900 font-medium tracking-tight;
   }
   
-  .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  .divider {
+    @apply border-stone-200;
   }
   
-  .badge-gold {
-    @apply bg-gradient-to-r from-yellow-400 to-yellow-600 text-black;
-  }
-  
-  .badge-silver {
-    @apply bg-gradient-to-r from-gray-300 to-gray-500 text-black;
-  }
-  
-  .badge-bronze {
-    @apply bg-gradient-to-r from-orange-400 to-orange-600 text-white;
-  }
-  
-  .badge-default {
-    @apply bg-gradient-to-r from-blue-500 to-purple-500 text-white;
-  }
-}
-
-@layer utilities {
-  .text-gradient {
-    @apply bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent;
-  }
-  
-  .glow {
-    box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+  .hover-lift {
+    @apply hover:translate-y-[-2px] transition-transform duration-200;
   }
 }
