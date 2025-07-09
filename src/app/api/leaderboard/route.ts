@@ -3,12 +3,16 @@ import { Pool } from 'pg'
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
+  ssl: process.env.NODE_ENV === 'production' ? {
     rejectUnauthorized: false
-  }
+  } : false,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
 })
 
 export async function GET() {
+  let client
   try {
     // Debug environment variable
     if (!process.env.DATABASE_URL) {
@@ -19,7 +23,9 @@ export async function GET() {
       }, { status: 500 })
     }
 
-    const client = await pool.connect()
+    console.log('Attempting to connect to database...')
+    client = await pool.connect()
+    console.log('Database connection established')
     
     // Get current month start and end dates
     const now = new Date()
@@ -60,8 +66,6 @@ export async function GET() {
     // Calculate total miles for all family members
     const totalMiles = leaderboardResult.rows.reduce((sum, row) => sum + parseFloat(row.total_miles), 0)
     
-    client.release()
-    
     return NextResponse.json({
       leaderboard: leaderboardResult.rows,
       activities: activitiesResult.rows,
@@ -70,6 +74,19 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Database error:', error)
-    return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 })
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      hostname: error.hostname
+    })
+    return NextResponse.json({ 
+      error: 'Failed to fetch data',
+      details: error.message,
+      code: error.code
+    }, { status: 500 })
+  } finally {
+    if (client) {
+      client.release()
+    }
   }
 }
