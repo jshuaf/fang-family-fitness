@@ -1,15 +1,5 @@
 import { NextResponse } from 'next/server'
-import { Pool } from 'pg'
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? {
-    rejectUnauthorized: false
-  } : false,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 10000,
-})
+import { Client } from 'pg'
 
 export async function GET() {
   let client
@@ -24,7 +14,13 @@ export async function GET() {
     }
 
     console.log('Attempting to connect to database...')
-    client = await pool.connect()
+    client = new Client({
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    })
+    await client.connect()
     console.log('Database connection established')
     
     // Get current month start and end dates
@@ -88,7 +84,7 @@ export async function GET() {
     }, { status: 500 })
   } finally {
     if (client) {
-      client.release()
+      await client.end()
     }
   }
 }
