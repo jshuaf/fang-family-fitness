@@ -74,15 +74,17 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Database error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    const errorCode = (error as any)?.code
     console.error('Error details:', {
-      message: error.message,
-      code: error.code,
-      hostname: error.hostname
+      message: errorMessage,
+      code: errorCode,
+      hostname: (error as any)?.hostname
     })
     return NextResponse.json({ 
       error: 'Failed to fetch data',
-      details: error.message,
-      code: error.code
+      details: errorMessage,
+      code: errorCode
     }, { status: 500 })
   } finally {
     if (client) {
