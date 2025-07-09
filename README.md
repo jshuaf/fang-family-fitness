@@ -1,6 +1,8 @@
-# Fang Family Fitness Dashboard
+# 🏃‍♀️ Fang Family Fitness Dashboard
 
 A beautiful, modern dashboard to track your family's fitness journey together.
+
+🚀 **Live Demo**: [fang-family-fitness.vercel.app](https://fang-family-fitness.vercel.app)
 
 ## Features
 
